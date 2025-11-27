@@ -17,6 +17,7 @@ Un jeu interactif où le joueur doit trouver les différences entre deux images 
 
 ## Lien GitHub Pages
 https://github.com/chirin04fazaa-pixel/fazaa_chirin_detective_differences.git
+chirin04fazaa-pixel.github.io
 
 ## Nouveautés explorées
 - Gestion d'état complexe avec JavaScript
