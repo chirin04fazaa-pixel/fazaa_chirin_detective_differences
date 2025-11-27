@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détective des Différences - 3 Niveaux</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <div class="bubbles" id="bubbles"></div>
+    
+    <div class="welcome-screen" id="welcome-screen">
+        <div class="magnifying-glass">🔍</div>
+        <h1 class="logo">Détective des Différences</h1>
+        <p class="subtitle">Deviens un super détective et trouve les différences !</p>
+        
+        <div class="form-group">
+            <label for="player-name">Ton nom de détective :</label>
+            <input type="text" id="player-name" placeholder="Ex: Super Détective" required>
+        </div>
+
+        <div class="level-selection">
+            <label>Choisis ton niveau :</label>
+            <div class="level-options">
+                <div class="level-option easy" data-level="facile">
+                    <span class="level-icon">😊</span>
+                    <div>Facile</div>
+                    <div class="level-desc">7 différences<br>6 essais</div>
+                </div>
+                <div class="level-option medium" data-level="moyen">
+                    <span class="level-icon">😐</span>
+                    <div>Moyen</div>
+                    <div class="level-desc">7 différences<br>4 essais</div>
+                </div>
+                <div class="level-option hard" data-level="difficile">
+                    <span class="level-icon">😰</span>
+                    <div>Difficile</div>
+                    <div class="level-desc">7 différences<br>3 essais</div>
+                </div>
+            </div>
+            <input type="hidden" id="selected-level" required>
+        </div>
+        
+        <button class="start-btn" id="start-btn">COMMENCER L'ENQUÊTE</button>
+    </div>
+    
+
+    <script src="script.js"></script>
+</body>
+</html>

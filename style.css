@@ -1,0 +1,213 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #1A535C, #4ECDC4);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: 'Comic Neue', cursive;
+    color: #F7FFF7;
+    overflow-x: hidden;
+}
+
+.bubbles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    animation: float 15s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* Page d'accueil */
+.welcome-screen {
+    text-align: center;
+    max-width: 700px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 40px 30px;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border: 3px solid #FFD166;
+    position: relative;
+    overflow: hidden;
+}
+
+/* titre detective difference */
+.logo {
+    font-family: 'Chewy', cursive;
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+    color: #FFD166;
+    text-shadow: 3px 3px 0 #1A535C, 6px 6px 0 rgba(0,0,0,0.2);
+    letter-spacing: 2px;
+}
+
+/* deviens un super detective */
+.subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    color: #F7FFF7;
+    opacity: 0.9;
+}
+
+/* logo de recherche */
+.magnifying-glass {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: search 2s infinite alternate;
+}
+
+@keyframes search {
+    0% { transform: translateX(-5px); }
+    100% { transform: translateX(5px); }
+}
+
+/* div avec zone de texte */
+.form-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #FFD166;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-family: 'Comic Neue', cursive;
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px #FFD166;
+    transform: translateY(-2px);
+}
+
+/* les 3 niveaux */
+.level-selection {
+    margin: 30px 0;
+}
+
+/* class de 3 différentes niveaux */
+.level-options {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.level-option {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px 15px;
+    border-radius: 15px;
+    text-align: center;
+    transition: all 0.3s;
+    border: 3px solid transparent;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.level-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.level-option.selected {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 0 #1A535C, 0 15px 20px rgba(0,0,0,0.2);
+}
+
+.level-option.easy {
+    background: #4CAF50;
+}
+
+.level-option.easy.selected {
+    border-color: #1A535C;
+}
+
+.level-option.medium {
+    background: #FF9800;
+}
+
+.level-option.medium.selected {
+    border-color: #1A535C;
+}
+
+.level-option.hard {
+    background: #F44336;
+}
+
+.level-option.hard.selected {
+    border-color: #1A535C;
+}
+
+/* emojis */
+.level-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* sous les emojis "7 différences" */
+.level-desc {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-top: 5px;
+}
+
+/* bouton commencer */
+.start-btn {
+    width: 100%;
+    padding: 18px;
+    font-size: 1.4rem;
+    background: #FF6B6B;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 0 #D14949, 0 15px 20px rgba(0, 0, 0, 0.2);
+    font-family: 'Chewy', cursive;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.start-btn:hover {
+    transform: translateY(2px);
+    box-shadow: 0 6px 0 #D14949, 0 10px 15px rgba(0, 0, 0, 0.2);
+}
