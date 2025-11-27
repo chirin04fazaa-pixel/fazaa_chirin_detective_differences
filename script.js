@@ -260,3 +260,171 @@ startBtn.addEventListener('click', function() {
     
     initGame();
 });
+// Éléments DOM supplémentaires
+const timeElement = document.getElementById('time');
+const attemptsElement = document.getElementById('attempts');
+const resetButton = document.getElementById('reset-btn');
+const winMessage = document.getElementById('win-message');
+const loseMessage = document.getElementById('lose-message');
+const finalTimeElement = document.getElementById('final-time');
+const finalCountElement = document.getElementById('final-count');
+const finalTotalElement = document.getElementById('final-total');
+const winnerName = document.getElementById('winner-name');
+const loserName = document.getElementById('loser-name');
+const playAgainButton = document.getElementById('play-again');
+const tryAgainButton = document.getElementById('try-again');
+
+// Ajouter à l'état du jeu
+// gameState doit inclure: foundDifferences, startTime, timerInterval, seconds, attempts, gameActive
+
+// Modifier initGame pour inclure les essais et le timer
+function initGame() {
+    const levelConfig = gameLevels[gameState.currentLevel];
+    
+    gameState.foundDifferences = [];
+    gameState.seconds = 0;
+    gameState.startTime = null;
+    gameState.attempts = levelConfig.maxAttempts;
+    gameState.gameActive = true;
+    
+    totalCountElement.textContent = levelConfig.totalDifferences;
+    totalDifferencesElement.textContent = levelConfig.totalDifferences;
+    attemptsElement.textContent = levelConfig.maxAttempts;
+    finalTotalElement.textContent = levelConfig.totalDifferences;
+    
+    levelIndicator.textContent = "Niveau: " + 
+        (gameState.currentLevel === "facile" ? "Facile" : 
+         gameState.currentLevel === "moyen" ? "Moyen" : "Difficile");
+    levelIndicator.className = "level-indicator " + gameState.currentLevel;
+    
+    countElement.textContent = '0';
+    timeElement.textContent = '00:00';
+    winMessage.style.display = 'none';
+    loseMessage.style.display = 'none';
+    
+    leftImg.src = levelConfig.images.left;
+    rightImg.src = levelConfig.images.right;
+    
+    leftImage.querySelectorAll('.difference-area').forEach(el => el.remove());
+    rightImage.querySelectorAll('.difference-area').forEach(el => el.remove());
+    
+    if (leftImg.complete && rightImg.complete) {
+        createDifferenceAreas(levelConfig);
+    } else {
+        leftImg.onload = rightImg.onload = () => createDifferenceAreas(levelConfig);
+    }
+    
+    // Arrêter le timer s'il est en cours
+    if (gameState.timerInterval) {
+        clearInterval(gameState.timerInterval);
+    }
+}
+
+// Modifier handleDifferenceClick pour démarrer le timer
+function handleDifferenceClick(event) {
+    if (!gameState.gameActive) return;
+    
+    const differenceId = parseInt(event.target.dataset.id);
+    
+    if (gameState.foundDifferences.includes(differenceId)) return;
+    
+    if (!gameState.startTime) startTimer();
+    
+    gameState.foundDifferences.push(differenceId);
+    countElement.textContent = gameState.foundDifferences.length;
+    
+    document.querySelectorAll(`.difference-area[data-id="${differenceId}"]`).forEach(area => {
+        area.classList.add('found');
+    });
+    
+    if (gameState.foundDifferences.length === gameLevels[gameState.currentLevel].totalDifferences) {
+        endGame(true);
+    }
+}
+
+// Ajouter la gestion des clics incorrects
+leftImage.addEventListener('click', handleImageClick);
+rightImage.addEventListener('click', handleImageClick);
+
+function handleImageClick(event) {
+    if (!gameState.gameActive || event.target.classList.contains('difference-area')) return;
+    
+    gameState.attempts--;
+    attemptsElement.textContent = gameState.attempts;
+    
+    const wrongClick = document.createElement('div');
+    wrongClick.className = 'wrong-click';
+    wrongClick.style.left = `${event.offsetX}px`;
+    wrongClick.style.top = `${event.offsetY}px`;
+    event.currentTarget.appendChild(wrongClick);
+    
+    setTimeout(() => wrongClick.remove(), 500);
+    
+    if (gameState.attempts <= 0) {
+        endGame(false);
+    }
+}
+
+// Chronomètre
+function startTimer() {
+    gameState.startTime = Date.now();
+    gameState.timerInterval = setInterval(() => {
+        gameState.seconds = Math.floor((Date.now() - gameState.startTime) / 1000);
+        const minutes = Math.floor(gameState.seconds / 60);
+        const seconds = gameState.seconds % 60;
+        timeElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000);
+}
+
+// Fin du jeu
+function endGame(isWin) {
+    gameState.gameActive = false;
+    clearInterval(gameState.timerInterval);
+    
+    if (isWin) {
+        finalTimeElement.textContent = timeElement.textContent;
+        winMessage.style.display = 'block';
+    } else {
+        finalCountElement.textContent = gameState.foundDifferences.length;
+        loseMessage.style.display = 'block';
+    }
+}
+
+// Événements des boutons
+resetButton.addEventListener('click', initGame);
+playAgainButton.addEventListener('click', function() {
+    winMessage.style.display = 'none';
+    initGame();
+});
+tryAgainButton.addEventListener('click', function() {
+    loseMessage.style.display = 'none';
+    initGame();
+});
+
+// Modifier le démarrage pour inclure les noms dans les messages
+startBtn.addEventListener('click', function() {
+    const name = playerNameInput.value.trim();
+    const level = selectedLevelInput.value;
+    
+    if (!name) {
+        alert("Entre ton nom de détective !");
+        return;
+    }
+
+    if (!level) {
+        alert("Choisis un niveau !");
+        return;
+    }
+    
+    gameState.playerName = name;
+    gameState.currentLevel = level;
+    
+    playerDisplay.textContent = name;
+    winnerName.textContent = " " + name + " !";
+    loserName.textContent = " " + name + " !";
+    
+    welcomeScreen.style.display = 'none';
+    gameScreen.style.display = 'block';
+    
+    initGame();
+});
