@@ -43,7 +43,49 @@
         
         <button class="start-btn" id="start-btn">COMMENCER L'ENQUÊTE</button>
     </div>
-    
+        <!-- Écran de jeu -->
+    <div class="game-screen" id="game-screen">
+        <div class="game-header">
+            <h1 class="game-title">Détective des Différences</h1>
+            <p>Trouve les <span id="total-differences">7</span> différences entre les deux images</p>
+            <div class="level-indicator" id="level-indicator">Niveau: Facile</div>
+        </div>
+
+        <div class="game-info">
+            <div class="player-info">Détective:<br><span id="player-display">Inconnu</span></div>
+            <div class="counter">Différences:<br><span id="count">0</span>/<span id="total-count">7</span></div>
+            <div class="timer">Temps:<br><span id="time">00:00</span></div>
+            <div class="attempts">Essais:<br><span id="attempts">3</span></div>
+        </div>
+
+        <div class="game-container">
+            <div class="image-container" id="left-image">
+                <img src="" alt="Image de gauche" id="left-img">
+            </div>
+            <div class="image-container" id="right-image">
+                <img src="" alt="Image de droite" id="right-img">
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="game-btn" id="reset-btn">Nouvelle Partie</button>
+            <button class="game-btn back-btn" id="back-btn">Retour à l'accueil</button>
+        </div>
+
+        <div class="message" id="win-message">
+            <h2>Félicitations <span id="winner-name">!</span></h2>
+            <p>Tu as résolu l'énigme en <span id="final-time">00:00</span></p>
+            <p>Tu es un super détective !</p>
+            <button class="message-btn" id="play-again">Rejouer</button>
+        </div>
+
+        <div class="message" id="lose-message">
+            <h2>Mission échouée <span id="loser-name">!</span></h2>
+            <p>Tu as utilisé tous tes essais</p>
+            <p>Différences trouvées: <span id="final-count">0</span>/<span id="final-total">7</span></p>
+            <button class="message-btn" id="try-again">Réessayer</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
