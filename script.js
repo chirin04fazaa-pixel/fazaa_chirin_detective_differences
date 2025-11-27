@@ -124,3 +124,139 @@ levelOptions.forEach(option => {
         selectedLevelInput.value = this.getAttribute('data-level');
     });
 });
+
+// Éléments DOM supplémentaires
+const leftImage = document.getElementById('left-image');
+const rightImage = document.getElementById('right-image');
+const leftImg = document.getElementById('left-img');
+const rightImg = document.getElementById('right-img');
+const countElement = document.getElementById('count');
+const totalCountElement = document.getElementById('total-count');
+const totalDifferencesElement = document.getElementById('total-differences');
+const levelIndicator = document.getElementById('level-indicator');
+
+// Initialisation du jeu
+function initGame() {
+    const levelConfig = gameLevels[gameState.currentLevel];
+    
+    // Réinitialiser l'état du jeu
+    gameState.foundDifferences = [];
+    gameState.seconds = 0;
+    gameState.startTime = null;
+    gameState.attempts = levelConfig.maxAttempts;
+    gameState.gameActive = true;
+    
+    totalCountElement.textContent = levelConfig.totalDifferences;
+    totalDifferencesElement.textContent = levelConfig.totalDifferences;
+    // attemptsElement n'est pas encore géré, sera dans le prochain commit
+    // finalTotalElement non plus
+    
+    levelIndicator.textContent = "Niveau: " + 
+        (gameState.currentLevel === "facile" ? "Facile" : 
+         gameState.currentLevel === "moyen" ? "Moyen" : "Difficile");
+    levelIndicator.className = "level-indicator " + gameState.currentLevel;
+    
+    countElement.textContent = '0';
+    // timeElement non géré pour l'instant
+    // winMessage et loseMessage non gérés pour l'instant
+    
+    // Utilisation d'images de placeholder - à remplacer par vos vraies images
+    leftImg.src = levelConfig.images.left;
+    rightImg.src = levelConfig.images.right;
+    
+    // Nettoyer les zones de différence existantes
+    leftImage.querySelectorAll('.difference-area').forEach(el => el.remove());
+    rightImage.querySelectorAll('.difference-area').forEach(el => el.remove());
+    
+    // Attendre que les images soient chargées avant de créer les zones
+    if (leftImg.complete && rightImg.complete) {
+        createDifferenceAreas(levelConfig);
+    } else {
+        leftImg.onload = rightImg.onload = () => createDifferenceAreas(levelConfig);
+    }
+}
+
+// Créer les zones de différence
+function createDifferenceAreas(levelConfig) {
+    const imgWidth = leftImg.clientWidth || 500; // Valeur par défaut si non chargé
+    const imgHeight = leftImg.clientHeight || 400; // Valeur par défaut si non chargé
+    
+    levelConfig.differences.forEach(diff => {
+        const leftPos = (diff.left / 100) * imgWidth;
+        const topPos = (diff.top / 100) * imgHeight;
+        const adjustedSize = diff.size;
+        
+        const leftArea = document.createElement('div');
+        leftArea.className = 'difference-area';
+        leftArea.style.left = `${leftPos}px`;
+        leftArea.style.top = `${topPos}px`;
+        leftArea.style.width = `${adjustedSize}px`;
+        leftArea.style.height = `${adjustedSize}px`;
+        leftArea.dataset.id = diff.id;
+        
+        const rightArea = document.createElement('div');
+        rightArea.className = 'difference-area';
+        rightArea.style.left = `${leftPos}px`;
+        rightArea.style.top = `${topPos}px`;
+        rightArea.style.width = `${adjustedSize}px`;
+        rightArea.style.height = `${adjustedSize}px`;
+        rightArea.dataset.id = diff.id;
+        
+        leftArea.addEventListener('click', handleDifferenceClick);
+        rightArea.addEventListener('click', handleDifferenceClick);
+        
+        leftImage.appendChild(leftArea);
+        rightImage.appendChild(rightArea);
+    });
+}
+
+// Clic sur différence
+function handleDifferenceClick(event) {
+    if (!gameState.gameActive) return;
+    
+    const differenceId = parseInt(event.target.dataset.id);
+    
+    if (gameState.foundDifferences.includes(differenceId)) return;
+    
+    // Démarrer le timer au premier clic (sera implémenté dans le prochain commit)
+    // if (!gameState.startTime) startTimer();
+    
+    gameState.foundDifferences.push(differenceId);
+    countElement.textContent = gameState.foundDifferences.length;
+    
+    document.querySelectorAll(`.difference-area[data-id="${differenceId}"]`).forEach(area => {
+        area.classList.add('found');
+    });
+    
+    if (gameState.foundDifferences.length === gameLevels[gameState.currentLevel].totalDifferences) {
+        // endGame(true); sera implémenté dans le prochain commit
+    }
+}
+
+// Modifier la fonction de démarrage pour initialiser le jeu
+// Remplacer la partie dans startBtn.addEventListener('click') par:
+startBtn.addEventListener('click', function() {
+    const name = playerNameInput.value.trim();
+    const level = selectedLevelInput.value;
+    
+    if (!name) {
+        alert("Entre ton nom de détective !");
+        return;
+    }
+
+    if (!level) {
+        alert("Choisis un niveau !");
+        return;
+    }
+    
+    gameState.playerName = name;
+    gameState.currentLevel = level;
+    
+    playerDisplay.textContent = name;
+    // winnerName et loserName seront gérés dans le prochain commit
+    
+    welcomeScreen.style.display = 'none';
+    gameScreen.style.display = 'block';
+    
+    initGame();
+});
